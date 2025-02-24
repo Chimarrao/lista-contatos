@@ -14,6 +14,7 @@
 Este repositório contém a implementação de uma **API RESTful** para gerenciamento de contatos, desenvolvida como parte do **Teste Técnico para Pessoa Desenvolvedora FullStack | PHP**.
 
 O objetivo do projeto é demonstrar habilidades em:
+
 - Desenvolvimento de APIs com Laravel.
 - Validação robusta (ex.: CPF único por usuário e validação oficial de CPF).
 - Integração com APIs externas (ViaCEP e Google Maps Geocoding).
@@ -24,54 +25,59 @@ O objetivo do projeto é demonstrar habilidades em:
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **PHP**: Versão 8.3.12  
-- **Laravel**: Versão 11.43.2  
-- **Banco de Dados**: SQLite (para facilitar a execução local).  
-- **Autenticação**: JWT (via pacote [tymon/jwt-auth](https://jwt-auth.readthedocs.io/en/develop/)).  
-- **Testes**: PHPUnit (32 testes unitários implementados).  
+- **PHP**: Versão 8.3.12
+- **Laravel**: Versão 11.43.2
+- **Banco de Dados**: SQLite (para facilitar a execução local).
+- **Autenticação**: JWT (via pacote [tymon/jwt-auth](https://jwt-auth.readthedocs.io/en/develop/)).
+- **Testes**: PHPUnit (32 testes unitários implementados).
 
 ---
 
 ## 🚀 Funcionalidades Principais
 
-1. **Cadastro de Contatos**  
-   - Validação de CPF (algoritmo oficial).  
-   - CPF único por usuário.  
-   - Campos obrigatórios: nome, CPF, telefone, CEP, rua, número, bairro, cidade, estado, latitude e longitude.  
-   - Campo complemento opcional.  
+1. **Cadastro de Contatos**
 
-2. **Listagem de Contatos**  
-   - Filtragem por nome ou CPF.  
-   - Ordenação personalizada (padrão: ordem alfabética crescente por nome).  
-   - Paginação controlada pelo frontend.  
+   - Validação de CPF (algoritmo oficial).
+   - CPF único por usuário.
+   - Campos obrigatórios: nome, CPF, telefone, CEP, rua, número, bairro, cidade, estado, latitude e longitude.
+   - Campo complemento opcional.
+2. **Listagem de Contatos**
 
-3. **Visualização, Atualização e Exclusão de Contatos**  
-   - Operações CRUD completas.  
+   - Filtragem por nome ou CPF.
+   - Ordenação personalizada (padrão: ordem alfabética crescente por nome).
+   - Paginação controlada pelo frontend.
+3. **Visualização, Atualização e Exclusão de Contatos**
+
+   - Operações CRUD completas.
 
 ---
+
 ### Pré-requisitos
+
 - PHP 8.3.12 instalado.
 - Composer instalado.
 - Git instalado.
 
 ### Passos para Execução
+
 1. **Clone o repositório**:
    ```bash
    git clone https://github.com/Chimarrao/lista-contatos
    cd lista-contatos
-    ```
+   ```
 2. **Instale as dependências**:
-    ```bash
-    composer install
-    ```
+   ```bash
+   composer install
+   ```
 3. **Execute as migrações do banco de dados**:
-    ```bash
-    php artisan migrate
-    ```
+   ```bash
+   php artisan migrate
+   ```
 
 ---
 
 ### 🔧 Testes Unitários
+
 Foram implementados **32 testes unitários** para garantir a cobertura das funcionalidades principais. Para executar os testes:
 
 ```bash
@@ -81,4 +87,5 @@ php artisan test
 ---
 
 ### 📝 Licença
-Este projeto está licenciado sob a **MIT License**. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+Este projeto está licenciado sob a **MIT License**.
