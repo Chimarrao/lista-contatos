@@ -99,6 +99,9 @@ class ContactController extends Controller
 
     /**
      * Retorna um contato específico.
+     * 
+     * @param  string $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(string $id)
     {
@@ -120,6 +123,10 @@ class ContactController extends Controller
 
     /**
      * Atualiza um contato.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, string $id)
     {
@@ -179,6 +186,9 @@ class ContactController extends Controller
 
     /**
      * Deleta um contato.
+     * 
+     * @param  string $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(string $id)
     {

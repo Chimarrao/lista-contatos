@@ -14,6 +14,9 @@ class AuthController extends Controller
 {
     /**
      * Registro de um novo usuário.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function register(Request $request)
     {
@@ -46,6 +49,9 @@ class AuthController extends Controller
 
     /**
      * Login do usuário.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
     {
@@ -53,7 +59,6 @@ class AuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-
 
         $user = User::where('email', $request->input('email'))->first();
 
@@ -75,6 +80,8 @@ class AuthController extends Controller
 
     /**
      * Logout do usuário.
+     * 
+     * @return \Illuminate\Http\JsonResponse
      */
     public function logout()
     {
@@ -94,6 +101,8 @@ class AuthController extends Controller
 
     /**
      * Retorna o usuário autenticado.
+     * 
+     * @return \Illuminate\Http\JsonResponse
      */
     public function me()
     {
@@ -114,6 +123,9 @@ class AuthController extends Controller
 
     /**
      * Envia o link de recuperação de senha.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function sendResetLinkEmail(Request $request)
     {
@@ -136,6 +148,9 @@ class AuthController extends Controller
 
     /**
      * Deleta a conta do usuário.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function deleteAccount(Request $request)
     {
