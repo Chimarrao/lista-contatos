@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
 use App\Http\Middleware\JwtMiddleware;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CepController;
+use App\Http\Controllers\GeocodeController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -16,20 +16,8 @@ Route::middleware([JwtMiddleware::class])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
 
-    Route::post('/cep', function (Request $request) {
-        $cep = $request->input('cep');
-        $response = Http::get("https://viacep.com.br/ws/{$cep}/json/");
-        return $response->json();
-    })->name('cep.lookup');
-
-    Route::post('/geocode', function (Request $request) {
-        $address = $request->input('address');
-        $response = Http::get("https://maps.googleapis.com/maps/api/geocode/json", [
-            'address' => $address,
-            'key' => env('GOOGLE_MAPS_API_KEY')
-        ]);
-        return $response->json();
-    })->name('geocode.lookup');
+    Route::post('/cep', [CepController::class, 'lookup'])->name('cep.lookup');
+    Route::post('/geocode', [GeocodeController::class, 'lookup'])->name('geocode.lookup');
 });
 
 Route::middleware([JwtMiddleware::class])->prefix('contacts')->group(function () {
