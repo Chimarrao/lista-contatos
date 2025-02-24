@@ -1,66 +1,84 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📋 Lista de Contatos - Teste Técnico
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <a href="https://www.php.net/" target="_blank"><img src="https://img.shields.io/badge/PHP-8.3.12-blue.svg" alt="PHP Version"></a>
+  <a href="https://laravel.com/" target="_blank"><img src="https://img.shields.io/badge/Laravel-11.43.2-red.svg" alt="Laravel Version"></a>
+  <a href="https://phpunit.de/" target="_blank"><img src="https://img.shields.io/badge/PHPUnit-^10-green.svg" alt="PHPUnit"></a>
+  <a href="https://jwt-auth.readthedocs.io/en/develop/" target="_blank"><img src="https://img.shields.io/badge/JWT-Auth-yellow.svg" alt="JWT Authentication"></a>
 </p>
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📌 Sobre o Projeto
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Este repositório contém a implementação de uma **API RESTful** para gerenciamento de contatos, desenvolvida como parte do **Teste Técnico para Pessoa Desenvolvedora FullStack | PHP**.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+O objetivo do projeto é demonstrar habilidades em:
+- Desenvolvimento de APIs com Laravel.
+- Validação robusta (ex.: CPF único por usuário e validação oficial de CPF).
+- Integração com APIs externas (ViaCEP e Google Maps Geocoding).
+- Autenticação JWT.
+- Testes unitários automatizados.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Tecnologias Utilizadas
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **PHP**: Versão 8.3.12  
+- **Laravel**: Versão 11.43.2  
+- **Banco de Dados**: SQLite (para facilitar a execução local).  
+- **Autenticação**: JWT (via pacote [tymon/jwt-auth](https://jwt-auth.readthedocs.io/en/develop/)).  
+- **Testes**: PHPUnit (32 testes unitários implementados).  
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🚀 Funcionalidades Principais
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Cadastro de Contatos**  
+   - Validação de CPF (algoritmo oficial).  
+   - CPF único por usuário.  
+   - Campos obrigatórios: nome, CPF, telefone, CEP, rua, número, bairro, cidade, estado, latitude e longitude.  
+   - Campo complemento opcional.  
 
-### Premium Partners
+2. **Listagem de Contatos**  
+   - Filtragem por nome ou CPF.  
+   - Ordenação personalizada (padrão: ordem alfabética crescente por nome).  
+   - Paginação controlada pelo frontend.  
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+3. **Visualização, Atualização e Exclusão de Contatos**  
+   - Operações CRUD completas.  
 
-## Contributing
+---
+### Pré-requisitos
+- PHP 8.3.12 instalado.
+- Composer instalado.
+- Git instalado.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Passos para Execução
+1. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/Chimarrao/lista-contatos
+   cd lista-contatos
+    ```
+2. **Instale as dependências**:
+    ```bash
+    composer install
+    ```
+3. **Execute as migrações do banco de dados**:
+    ```bash
+    php artisan migrate
+    ```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 🔧 Testes Unitários
+Foram implementados **32 testes unitários** para garantir a cobertura das funcionalidades principais. Para executar os testes:
 
-## Security Vulnerabilities
+```bash
+php artisan test
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 📝 Licença
+Este projeto está licenciado sob a **MIT License**. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
