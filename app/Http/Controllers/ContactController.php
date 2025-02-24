@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Rules\ValidCpf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -40,7 +41,7 @@ class ContactController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'cpf' => 'required|string|max:14|unique:contacts,cpf,NULL,id,user_id,' . Auth::id(),
+            'cpf' => ['required', 'string', 'max:14', new ValidCpf, 'unique:contacts,cpf,NULL,id,user_id,' . Auth::id()],
             'phone' => 'required|string|max:20',
             'cep' => 'required|string|max:9',
             'street' => 'required|string|max:255',

@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -82,6 +81,151 @@ class ContactControllerTest extends TestCase
             'name' => 'João Silva',
             'user_id' => $this->user->id,
         ]);
+    }
+
+    /**
+     * Teste de criação de contato com CPF inválido.
+     */
+    public function test_store_with_invalid_cpf()
+    {
+        $contactData = [
+            'name' => 'João Silva',
+            'cpf' => '123.456.789-00',
+            'phone' => '(11) 99999-9999',
+            'cep' => '01001-000',
+            'street' => 'Rua Exemplo',
+            'number' => '123',
+            'complement' => 'Apto 456',
+            'neighborhood' => 'Centro',
+            'city' => 'São Paulo',
+            'state' => 'SP',
+            'latitude' => -23.5505,
+            'longitude' => -46.6333,
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->postJson('/api/contacts', $contactData);
+
+        $response->assertStatus(422)->assertJsonValidationErrors(['cpf']);
+    }
+
+    /**
+     * Teste de criação de contato com CPF duplicado para o mesmo usuário.
+     */
+    public function test_store_with_duplicate_cpf_for_same_user()
+    {
+        $contactData = [
+            'name' => 'João Silva',
+            'cpf' => '123.456.789-09',
+            'phone' => '(11) 99999-9999',
+            'cep' => '01001-000',
+            'street' => 'Rua Exemplo',
+            'number' => '123',
+            'complement' => 'Apto 456',
+            'neighborhood' => 'Centro',
+            'city' => 'São Paulo',
+            'state' => 'SP',
+            'latitude' => -23.5505,
+            'longitude' => -46.6333,
+        ];
+
+        $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->postJson('/api/contacts', $contactData);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->postJson('/api/contacts', $contactData);
+
+        $response->assertStatus(422)->assertJsonValidationErrors(['cpf']);
+    }
+
+    /**
+     * Teste de criação de contato com campos obrigatórios ausentes.
+     */
+    public function test_store_with_missing_required_fields()
+    {
+        $contactData = [
+            'name' => '', // Campo obrigatório vazio
+            'cpf' => '123.456.789-09',
+            'phone' => '', // Campo obrigatório vazio
+            'cep' => '01001-000',
+            'street' => '', // Campo obrigatório vazio
+            'number' => '', // Campo obrigatório vazio
+            'neighborhood' => '', // Campo obrigatório vazio
+            'city' => '', // Campo obrigatório vazio
+            'state' => '', // Campo obrigatório vazio
+            'latitude' => -23.5505,
+            'longitude' => -46.6333,
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->postJson('/api/contacts', $contactData);
+
+        $response->assertStatus(422)->assertJsonValidationErrors(['name', 'phone', 'street', 'number', 'neighborhood', 'city', 'state']);
+    }
+
+    /**
+     * Teste de criação de contato sem o campo complemento.
+     */
+    public function test_store_without_complement()
+    {
+        $contactData = [
+            'name' => 'João Silva',
+            'cpf' => '123.456.789-09',
+            'phone' => '(11) 99999-9999',
+            'cep' => '01001-000',
+            'street' => 'Rua Exemplo',
+            'number' => '123',
+            'neighborhood' => 'Centro',
+            'city' => 'São Paulo',
+            'state' => 'SP',
+            'latitude' => -23.5505,
+            'longitude' => -46.6333,
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->postJson('/api/contacts', $contactData);
+
+        $response->assertStatus(201)
+            ->assertJson([
+                'success' => true,
+                'message' => 'Contato criado com sucesso.',
+            ]);
+    }
+
+    /**
+     * Teste de atualização de contato com CPF duplicado para o mesmo usuário.
+     */
+    public function test_update_with_duplicate_cpf_for_same_user()
+    {
+        $contact1 = Contact::factory()->create(['user_id' => $this->user->id, 'cpf' => '123.456.789-09']);
+        $contact2 = Contact::factory()->create(['user_id' => $this->user->id, 'cpf' => '987.654.321-00']);
+
+        $updatedData = [
+            'name' => 'João Silva Atualizado',
+            'cpf' => '123.456.789-09', // CPF do primeiro contato
+            'phone' => '(11) 99999-9999',
+            'cep' => '01001-000',
+            'street' => 'Rua Exemplo',
+            'number' => '123',
+            'complement' => 'Apto 456',
+            'neighborhood' => 'Centro',
+            'city' => 'São Paulo',
+            'state' => 'SP',
+            'latitude' => -23.5505,
+            'longitude' => -46.6333,
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->putJson('/api/contacts/' . $contact2->id, $updatedData);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['cpf']);
     }
 
     /**
