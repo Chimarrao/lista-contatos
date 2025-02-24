@@ -19,10 +19,22 @@ class ContactController extends Controller
     public function index(Request $request)
     {
         $paginacao = $request->input('qtd') ?? 10;
+        $search = $request->input('search');
+        $orderBy = $request->input('orderBy', 'name');
+        $orderDirection = $request->input('orderDirection', 'asc');
 
-        $contacts = Contact::where('user_id', Auth::id())
-            ->orderBy('name', 'asc')
-            ->paginate($paginacao); 
+        $query = Contact::where('user_id', Auth::id());
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('cpf', 'like', "%{$search}%")
+                    ->orWhere('name', 'like', "%{$search}%");
+            });
+        }
+
+        $query->orderBy($orderBy, $orderDirection);
+
+        $contacts = $query->paginate($paginacao);
 
         return response()->json([
             'success' => true,

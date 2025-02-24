@@ -386,4 +386,108 @@ class ContactControllerTest extends TestCase
 
         $response->assertStatus(401);
     }
+
+    /**
+     * Teste de listagem de contatos com filtro por nome.
+     */
+    public function test_index_with_name_filter()
+    {
+        Contact::factory()->create(['user_id' => $this->user->id, 'name' => 'João Silva']);
+        Contact::factory()->create(['user_id' => $this->user->id, 'name' => 'Maria Santos']);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->getJson('/api/contacts?search=João');
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'message' => 'Contatos listados com sucesso.',
+            ])
+            ->assertJsonCount(1, 'data.data')
+            ->assertJsonPath('data.data.0.name', 'João Silva');
+    }
+
+    /**
+     * Teste de listagem de contatos com filtro por CPF.
+     */
+    public function test_index_with_cpf_filter()
+    {
+        Contact::factory()->create(['user_id' => $this->user->id, 'cpf' => '123.456.789-09']);
+        Contact::factory()->create(['user_id' => $this->user->id, 'cpf' => '987.654.321-00']);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->getJson('/api/contacts?search=123.456.789-09');
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'message' => 'Contatos listados com sucesso.',
+            ])
+            ->assertJsonCount(1, 'data.data')
+            ->assertJsonPath('data.data.0.cpf', '123.456.789-09');
+    }
+
+    /**
+     * Teste de listagem de contatos com ordenação crescente.
+     */
+    public function test_index_with_ascending_order()
+    {
+        Contact::factory()->create(['user_id' => $this->user->id, 'name' => 'Maria Santos']);
+        Contact::factory()->create(['user_id' => $this->user->id, 'name' => 'João Silva']);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->getJson('/api/contacts?orderBy=name&orderDirection=asc');
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'message' => 'Contatos listados com sucesso.',
+            ])
+            ->assertJsonPath('data.data.0.name', 'João Silva')
+            ->assertJsonPath('data.data.1.name', 'Maria Santos');
+    }
+
+    /**
+     * Teste de listagem de contatos com ordenação decrescente.
+     */
+    public function test_index_with_descending_order()
+    {
+        Contact::factory()->create(['user_id' => $this->user->id, 'name' => 'Maria Santos']);
+        Contact::factory()->create(['user_id' => $this->user->id, 'name' => 'João Silva']);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->getJson('/api/contacts?orderBy=name&orderDirection=desc');
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'message' => 'Contatos listados com sucesso.',
+            ])
+            ->assertJsonPath('data.data.0.name', 'Maria Santos')
+            ->assertJsonPath('data.data.1.name', 'João Silva');
+    }
+
+    /**
+     * Teste de listagem de contatos com paginação.
+     */
+    public function test_index_with_pagination()
+    {
+        Contact::factory()->count(15)->create(['user_id' => $this->user->id]);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->getJson('/api/contacts?qtd=10');
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'message' => 'Contatos listados com sucesso.',
+            ])
+            ->assertJsonCount(10, 'data.data') 
+            ->assertJsonPath('data.total', 15); 
+    }
 }
