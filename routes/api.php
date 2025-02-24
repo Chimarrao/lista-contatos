@@ -9,21 +9,12 @@ use App\Http\Controllers\AuthController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
-Route::get('/me', [AuthController::class, 'me'])->middleware('auth:api');
-Route::post('/password/reset', [AuthController::class, 'sendResetLinkEmail']);
+Route::post('/password/reset', [AuthController::class, 'sendResetLinkEmail'])->name('password.reset');
 Route::post('/delete-account', [AuthController::class, 'deleteAccount']);
 
-Route::middleware([JwtMiddleware::class])->prefix('contacts')->group(function () {
-    Route::get('/', [ContactController::class, 'index'])->name('contacts.index');
-    Route::post('/', [ContactController::class, 'store'])->name('contacts.store');
-    Route::get('/{contact}', [ContactController::class, 'show'])->name('contacts.show');
-    Route::put('/{contact}', [ContactController::class, 'update'])->name('contacts.update');
-    Route::delete('/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
-
-    Route::post('/delete-account', function (Request $request) {
-        //
-    })->name('account.delete');
+Route::middleware([JwtMiddleware::class])->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
 
     Route::post('/cep', function (Request $request) {
         $cep = $request->input('cep');
@@ -39,5 +30,12 @@ Route::middleware([JwtMiddleware::class])->prefix('contacts')->group(function ()
         ]);
         return $response->json();
     })->name('geocode.lookup');
+});
 
+Route::middleware([JwtMiddleware::class])->prefix('contacts')->group(function () {
+    Route::get('/', [ContactController::class, 'index'])->name('contacts.index');
+    Route::post('/', [ContactController::class, 'store'])->name('contacts.store');
+    Route::get('/{contact}', [ContactController::class, 'show'])->name('contacts.show');
+    Route::put('/{contact}', [ContactController::class, 'update'])->name('contacts.update');
+    Route::delete('/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 });
